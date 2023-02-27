@@ -12,31 +12,25 @@ using WSDL.mensajes;
 using SoapCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace soap_test
-{
-    public class Startup
-    {
+namespace soap_test{
+    public class Startup{
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services){
             services.TryAddSingleton<Mensajes, Operaciones>();
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         [Obsolete]
-        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env){
+            if (env.IsDevelopment()){
                 app.UseDeveloperExceptionPage();
                 app.UseSoapEndpoint<Mensajes>("/soap.asmx", new SoapEncoderOptions(), 
                     SoapSerializer.XmlSerializer);
             }
 
-            app.Run(async (context) =>
-            {
+            app.Run(async (context) =>{
                 await context.Response.WriteAsync("Hello World!");
             });
         }
