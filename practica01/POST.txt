@@ -1,0 +1,5 @@
+curl -X POST ^
+-H "Accept: text/xml" ^
+-H "SOAPAction: "http://tempuri.org/IConsultaCFDIService/Consulta"" ^
+-H "Content-Type: text/xml; charset=utf-8" ^
+--data @soap.xml https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc?wsdl

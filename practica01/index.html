@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obtener datos CFDI</title>
+</head>
+
+<body>
+    <textarea id="documento" type="text" cols="150" rows="20" style="resize: both;"></textarea>
+
+    <button type="submit" className="btn btn-block btn-primary" onclick="obtenerDatos()">Obtener datos</button>
+    
+    <h3 id="rfcEmisor"></h3>
+    <h3 id="rfcReceptor"></h3>
+    <h3 id="tt"></h3>
+    <h3 id="uuid"></h3>
+    <p id="demo"></p>
+
+    <script>
+        function obtenerDatos(){
+            if(document.getElementById("documento").value != ""){
+                var xmlDoc = new DOMParser().parseFromString(document.getElementById("documento").value, "text/xml");
+
+                var rfcE = xmlDoc.getElementsByTagName("cfdi:Emisor")[0];
+                var rfcEmisor = rfcE.getAttribute("rfc") || rfcE.getAttribute("Rfc");
+                
+                var rfcR = xmlDoc.getElementsByTagName("cfdi:Receptor")[0];
+                var rfcReceptor = rfcR.getAttribute("rfc") || rfcR.getAttribute("Rfc");
+                
+                var total = xmlDoc.getElementsByTagName("cfdi:Comprobante")[0];
+                var tt = total.getAttribute("total") || total.getAttribute("Total");
+                
+                var uuid = xmlDoc.getElementsByTagName("tfd:TimbreFiscalDigital")[0];
+                var id = uuid.getAttribute("UUID") || uuid.getAttribute("uuid");
+
+                document.getElementById("rfcEmisor").innerHTML = "RE: " + rfcEmisor;
+                document.getElementById("rfcReceptor").innerHTML = "RR: " + rfcReceptor;
+                document.getElementById("tt").innerHTML = "TT: " + tt;
+                document.getElementById("uuid").innerHTML = "UUID: " + id;
+
+                document.getElementById("demo").innerHTML = "<![CDATA[rr=" + rfcEmisor + "&re=" + rfcReceptor + "&tt=" + tt + "&id=" + id + "]]>";
+            }else{
+                document.getElementById("demo").innerHTML = "No hay datos que obtener";
+            }
+        }
+    </script>
+</body>
+
+</html>

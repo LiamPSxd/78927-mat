@@ -1,0 +1,9 @@
+<Envelope xmlns='http://schemas.xmlsoap.org/soap/envelope/'>
+	<Body>
+		<Consulta xmlns='http://tempuri.org/'>
+			<expresionImpresa>
+				<![CDATA[?re=GEV8501016A2&rr=MPM900101H98&tt=63.000000&id=36FD1D50-C863-496B-9011-4D23235DAFF1]]>
+			</expresionImpresa>
+		</Consulta>
+	</Body>
+</Envelope>
