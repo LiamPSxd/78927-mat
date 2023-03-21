@@ -20,7 +20,7 @@ public class EndPoint{
 	
 	@PayloadRoot(localPart = "SaludarRequest", namespace = "https://t4is.uv.mx/saludos")
 	@ResponsePayload
-	public SaludarResponse saludar(@RequestPayload SaludarRequest request){
+	public SaludarResponse Saludar(@RequestPayload SaludarRequest request){
 		SaludarResponse response = new SaludarResponse();
 		response.setReturn("Hola " + request.getNombre());
 		saludos.add(request.getNombre());
@@ -29,7 +29,7 @@ public class EndPoint{
 
 	@PayloadRoot(localPart = "BuscarSaludosRequest", namespace = "https://t4is.uv.mx/saludos")
 	@ResponsePayload
-	public BuscarSaludosResponse buscarSaludos(){
+	public BuscarSaludosResponse BuscarSaludos(){
 		BuscarSaludosResponse response = new BuscarSaludosResponse();
 		
 		String resultado = "";
@@ -43,28 +43,40 @@ public class EndPoint{
 
 	@PayloadRoot(localPart = "ModificarSaludoRequest", namespace = "https://t4is.uv.mx/saludos")
 	@ResponsePayload
-	public ModificarSaludoResponse modificarSaludo(@RequestPayload ModificarSaludoRequest request){
+	public ModificarSaludoResponse ModificarSaludo(@RequestPayload ModificarSaludoRequest request){
 		ModificarSaludoResponse response = new ModificarSaludoResponse();
 
 		int i;
+		boolean ban = false;
 		String anterior = "";
-		for(i=0; i>saludos.size(); i++)
+		for(i=0; i<saludos.size(); i++)
 			if(request.getId() == i){
 				anterior = saludos.get(i);
 				saludos.set(i, request.getSaludo());
+				ban = true;
+				response.setReturn(anterior + " modificado por " + saludos.get(i));
 			}
 
-		response.setReturn(anterior + " modificado por " + saludos.get(i));
+		
+		if(!ban){
+			response.setReturn("Saludo no encontrado...");
+			ban = false;
+		}
+
 		return response;
 	}
 
 	@PayloadRoot(localPart = "EliminarSaludoRequest", namespace = "https://t4is.uv.mx/saludos")
 	@ResponsePayload
-	public EliminarSaludoResponse eliminarSaludo(@RequestPayload EliminarSaludoRequest request){
+	public EliminarSaludoResponse EliminarSaludo(@RequestPayload EliminarSaludoRequest request){
 		EliminarSaludoResponse response = new EliminarSaludoResponse();
+
 		String saludo = saludos.get(request.getId());
-		saludos.remove(request.getId());
-		response.setReturn(saludo + " eliminado con exito");
+		if(saludo != null){
+			saludos.remove(request.getId());
+			response.setReturn(saludo + " eliminado con exito");
+		}else response.setReturn("Saludo no encontrado...");
+		
 		return response;
 	}
 }
