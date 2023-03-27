@@ -12,6 +12,11 @@ public class Saludador{
     private Integer id;
     private String nombre;
 
+    public Saludador(){
+        this.id = 0;
+        this.nombre = "";
+    }
+
     public Integer getId(){
         return id;
     }

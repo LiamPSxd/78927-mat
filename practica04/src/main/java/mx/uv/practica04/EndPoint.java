@@ -19,15 +19,13 @@ import https.t4is_uv_mx.saludos.SaludarRequest;
 public class EndPoint{
 	@Autowired
 	private ISaludador iSaludador;
-	private ArrayList<String> saludos = new ArrayList<String>();
-	
+
 	@PayloadRoot(localPart = "SaludarRequest", namespace = "https://t4is.uv.mx/saludos")
 	@ResponsePayload
 	public SaludarResponse Saludar(@RequestPayload SaludarRequest request){
 		SaludarResponse response = new SaludarResponse();
 		response.setReturn("Hola " + request.getNombre());
-		saludos.add(request.getNombre());
-		
+
 		//Persistencia a la Base de Datos
 		Saludador saludador = new Saludador();
 		saludador.setNombre(request.getNombre());
@@ -40,13 +38,14 @@ public class EndPoint{
 	@ResponsePayload
 	public BuscarSaludosResponse BuscarSaludos(){
 		BuscarSaludosResponse response = new BuscarSaludosResponse();
-		
-		String resultado = "";
-		for(String saludo : saludos){
-			resultado += ", " + saludo;
+
+		String resultado = "{\n";
+		for(Saludador saludo : iSaludador.findAll()){
+			resultado += "	{'id': '" + String.valueOf(saludo.getId()) + "', 'nombre': '" + saludo.getNombre() + "'}\n";
 		}
 
-		response.setReturn(resultado);
+		response.setReturn(resultado + "\n}");
+		
 		return response;
 	}
 
@@ -54,23 +53,15 @@ public class EndPoint{
 	@ResponsePayload
 	public ModificarSaludoResponse ModificarSaludo(@RequestPayload ModificarSaludoRequest request){
 		ModificarSaludoResponse response = new ModificarSaludoResponse();
+		Saludador saludador = iSaludador.findById(request.getId()).get();
 
-		int i;
-		boolean ban = false;
-		String anterior = "";
-		for(i=0; i<saludos.size(); i++)
-			if(request.getId() == i){
-				anterior = saludos.get(i);
-				saludos.set(i, request.getSaludo());
-				ban = true;
-				response.setReturn(anterior + " modificado por " + saludos.get(i));
-			}
+		if(saludador != null){
+			String anterior = saludador.getNombre();
+			saludador.setNombre(request.getSaludo());
+			iSaludador.save(saludador);
 
-		
-		if(!ban){
-			response.setReturn("Saludo no encontrado...");
-			ban = false;
-		}
+			response.setReturn(anterior + " modificado por " + saludador.getNombre());
+		}else response.setReturn("Saludo no encontrado...");
 
 		return response;
 	}
@@ -79,13 +70,13 @@ public class EndPoint{
 	@ResponsePayload
 	public EliminarSaludoResponse EliminarSaludo(@RequestPayload EliminarSaludoRequest request){
 		EliminarSaludoResponse response = new EliminarSaludoResponse();
+		Saludador saludador = iSaludador.findById(request.getId()).get();
 
-		String saludo = saludos.get(request.getId());
-		if(saludo != null){
-			saludos.remove(request.getId());
-			response.setReturn(saludo + " eliminado con exito");
+		if(saludador != null){
+			iSaludador.deleteById(saludador.getId());
+			response.setReturn(saludador.getNombre() + " eliminado con exito");
 		}else response.setReturn("Saludo no encontrado...");
-		
+
 		return response;
 	}
 }
