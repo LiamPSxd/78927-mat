@@ -18,17 +18,40 @@ run apt update && apt install -y \
 openjdk-8-jdk \
 mariadb-server
 workdir /app
-add app/Saludos-0.0.1-SNAPSHOT.jar /app/Saludos-0.0.1-SNAPSHOT.jar
-add app/script.sh /app/script.sh
+add ./practica04-0.0.1-SNAPSHOT.jar /app/x.jar
+add ./script.sh /app/script.sh
+add ./script.sql /app/script.sql
+run /etc/init.d/mariadb start; mysql < /app/script.sql
 run chmod 755 /app/script.sh
 cmd ["/app/script.sh"]
 expose 8080
 
 
-cat > docker3
+script.sh
+#!/bin/sh
+/etc/init.d/mariadb start
+/user/bin/java -jar x.jar
+
+
 from ubuntu
 run apt update && apt install -y \
 openjdk-8-jdk \
-mysql-server
+mariadb-server
 workdir /app
-add 
+add /app/practica04-0.0.1-SNAPSHOT.jar /app/practica04-0.0.1-SNAPSHOT.jar
+add /app/script.sh /app/script.sh
+add /app/script.sql /app/script.sql
+run chmod 755 /app/script.sh
+run /etc/init.d/mariadb start; mysql < /app/script.sql
+cmd ["/app/script.sh"]
+expose 8080
+
+#!/bin/sh
+/etc/init.d/mariadb start
+/usr/bin/java -jar practica04-0.0.1-SNAPSHOT.jar
+
+CREATE DATABASE IF NOT EXISTS springboot;
+USE springboot;
+CREATE USER IF NOT EXISTS 'liam'@'127.0.0.1' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON dbspring.* TO 'liam'@'127.0.0.1';
+FLUSH PRIVILEGES;
