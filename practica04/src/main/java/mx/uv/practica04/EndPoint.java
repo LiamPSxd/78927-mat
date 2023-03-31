@@ -1,7 +1,5 @@
 package mx.uv.practica04;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -44,7 +42,7 @@ public class EndPoint{
 			resultado += "	{'id': '" + String.valueOf(saludo.getId()) + "', 'nombre': '" + saludo.getNombre() + "'}\n";
 		}
 
-		response.setReturn(resultado + "\n}");
+		response.setReturn(resultado + "}");
 		
 		return response;
 	}

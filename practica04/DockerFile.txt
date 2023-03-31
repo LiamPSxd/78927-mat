@@ -1,0 +1,34 @@
+cat > docker1
+from ubuntu:latest
+workdir /practica04
+expose 8080
+cmd ["/practica04/mvnw", "spring-boot:run"]
+run apt-get update && apt-get install -y \
+openjdk-8-jdk \
+curl \
+unzip
+run curl -G https://start.spring.io/starter.zip -d dependencies=web-services -d javaVersion=8 -d groupId=mx.uv -d artifactId=practicaXX -d language=java -d type=maven-project -d bootVersion=2.7.9 -o demo.zip
+run unzip demo.zip
+run /practica04/mvnw install
+
+
+cat > docker2
+from ubuntu
+run apt update && apt install -y \
+openjdk-8-jdk \
+mariadb-server
+workdir /app
+add app/Saludos-0.0.1-SNAPSHOT.jar /app/Saludos-0.0.1-SNAPSHOT.jar
+add app/script.sh /app/script.sh
+run chmod 755 /app/script.sh
+cmd ["/app/script.sh"]
+expose 8080
+
+
+cat > docker3
+from ubuntu
+run apt update && apt install -y \
+openjdk-8-jdk \
+mysql-server
+workdir /app
+add 
