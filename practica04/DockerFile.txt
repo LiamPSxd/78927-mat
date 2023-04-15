@@ -55,3 +55,5 @@ USE springboot;
 CREATE USER IF NOT EXISTS 'liam'@'127.0.0.1' IDENTIFIED BY '1234';
 GRANT ALL PRIVILEGES ON springboot.* TO 'liam'@'127.0.0.1';
 FLUSH PRIVILEGES;
+
+docker run --rm -p 8080:8080 -v datos:/var/lib/mysql practica04

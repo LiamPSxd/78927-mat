@@ -1,0 +1,6 @@
+[submodule "practica05/Pistas"]
+	path = practica05/Pistas
+	url = https://github.com/LiamPSxd/Pistas
+[submodule "practica05/Hangares"]
+	path = practica05/Hangares
+	url = https://github.com/LiamPSxd/Hangares

@@ -39,7 +39,7 @@ public class EndPoint{
 
 		String resultado = "{\n";
 		for(Saludador saludo : iSaludador.findAll()){
-			resultado += "	{'id': '" + String.valueOf(saludo.getId()) + "', 'nombre': '" + saludo.getNombre() + "'}\n";
+			resultado += "	{'id': '" + String.valueOf(saludo.getId()) + "', 'nombre': '" + saludo.getNombre() + "'},\n";
 		}
 
 		response.setReturn(resultado + "}");
