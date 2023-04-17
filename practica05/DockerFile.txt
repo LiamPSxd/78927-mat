@@ -32,7 +32,7 @@ script.sh
 /etc/init.d/mariadb start
 /user/bin/java -jar x.jar
 
-
+//Practica04
 from ubuntu
 run apt update && apt install -y \
 openjdk-8-jdk \
@@ -57,3 +57,55 @@ GRANT ALL PRIVILEGES ON springboot.* TO 'liam'@'127.0.0.1';
 FLUSH PRIVILEGES;
 
 docker run --rm -p 8080:8080 -v datos:/var/lib/mysql practica04
+
+//Pistas
+from ubuntu
+run apt update && apt install -y \
+openjdk-8-jdk \
+mariadb-server
+workdir /app
+add /app/pista-0.0.1-SNAPSHOT.jar /app/pista-0.0.1-SNAPSHOT.jar
+add /app/script.sh /app/script.sh
+add /app/script.sql /app/script.sql
+run chmod 755 /app/script.sh
+run /etc/init.d/mariadb start; mysql < /app/script.sql
+cmd ["/app/script.sh"]
+expose 8080
+
+#!/bin/sh
+/etc/init.d/mariadb start
+/usr/bin/java -jar pista-0.0.1-SNAPSHOT.jar
+
+CREATE DATABASE IF NOT EXISTS pistas;
+USE pistas;
+CREATE USER IF NOT EXISTS 'pistas'@'127.0.0.1' IDENTIFIED BY 'pistas';
+GRANT ALL PRIVILEGES ON pistas.* TO 'pistas'@'127.0.0.1';
+FLUSH PRIVILEGES;
+
+docker run --rm -p 8080:8080 -v datos:/var/lib/mysql pistas
+
+//Hangares
+from ubuntu
+run apt update && apt install -y \
+openjdk-8-jdk \
+mariadb-server
+workdir /app
+add /app/hangar-0.0.1-SNAPSHOT.jar /app/hangar-0.0.1-SNAPSHOT.jar
+add /app/script.sh /app/script.sh
+add /app/script.sql /app/script.sql
+run chmod 755 /app/script.sh
+run /etc/init.d/mariadb start; mysql < /app/script.sql
+cmd ["/app/script.sh"]
+expose 8080
+
+#!/bin/sh
+/etc/init.d/mariadb start
+/usr/bin/java -jar hangar-0.0.1-SNAPSHOT.jar
+
+CREATE DATABASE IF NOT EXISTS hangares;
+USE hangares;
+CREATE USER IF NOT EXISTS 'hangares'@'127.0.0.1' IDENTIFIED BY 'hangares';
+GRANT ALL PRIVILEGES ON hangares.* TO 'hangares'@'127.0.0.1';
+FLUSH PRIVILEGES;
+
+docker run --rm -p 8080:8080 -v datos:/var/lib/mysql hangares
