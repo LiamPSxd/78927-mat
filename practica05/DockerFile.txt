@@ -1,0 +1,59 @@
+cat > docker1
+from ubuntu:latest
+workdir /practica04
+expose 8080
+cmd ["/practica04/mvnw", "spring-boot:run"]
+run apt-get update && apt-get install -y \
+openjdk-8-jdk \
+curl \
+unzip
+run curl -G https://start.spring.io/starter.zip -d dependencies=web-services -d javaVersion=8 -d groupId=mx.uv -d artifactId=practicaXX -d language=java -d type=maven-project -d bootVersion=2.7.9 -o demo.zip
+run unzip demo.zip
+run /practica04/mvnw install
+
+
+cat > docker2
+from ubuntu
+run apt update && apt install -y \
+openjdk-8-jdk \
+mariadb-server
+workdir /app
+add ./practica04-0.0.1-SNAPSHOT.jar /app/x.jar
+add ./script.sh /app/script.sh
+add ./script.sql /app/script.sql
+run /etc/init.d/mariadb start; mysql < /app/script.sql
+run chmod 755 /app/script.sh
+cmd ["/app/script.sh"]
+expose 8080
+
+
+script.sh
+#!/bin/sh
+/etc/init.d/mariadb start
+/user/bin/java -jar x.jar
+
+
+from ubuntu
+run apt update && apt install -y \
+openjdk-8-jdk \
+mariadb-server
+workdir /app
+add /app/practica04-0.0.1-SNAPSHOT.jar /app/practica04-0.0.1-SNAPSHOT.jar
+add /app/script.sh /app/script.sh
+add /app/script.sql /app/script.sql
+run chmod 755 /app/script.sh
+run /etc/init.d/mariadb start; mysql < /app/script.sql
+cmd ["/app/script.sh"]
+expose 8080
+
+#!/bin/sh
+/etc/init.d/mariadb start
+/usr/bin/java -jar practica04-0.0.1-SNAPSHOT.jar
+
+CREATE DATABASE IF NOT EXISTS springboot;
+USE springboot;
+CREATE USER IF NOT EXISTS 'liam'@'127.0.0.1' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON springboot.* TO 'liam'@'127.0.0.1';
+FLUSH PRIVILEGES;
+
+docker run --rm -p 8080:8080 -v datos:/var/lib/mysql practica04
