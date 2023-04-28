@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -49,5 +50,15 @@ public class Practica06Application {
 		lista.add(new Producto("refrescos", 20));
 
 		return lista;
+	}
+
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
+	public String getSaludar(){
+		return "mensaje de tipo GET";
+	}
+
+	@RequestMapping(value = "/post", method = RequestMethod.POST)
+	public String postSaludar(){
+		return "mensaje de tipo POST";
 	}
 }
