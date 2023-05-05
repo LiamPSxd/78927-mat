@@ -1,7 +1,12 @@
+const API_URL = "https://swapi.dev/api/people/";
+
 const nombre = document.getElementById("nombre");
 const world = document.getElementById("world");
 
-fetch("https://swapi.dev/api/people/1")
+const noPeople = document.getElementById("noPeople");
+
+const getPeople = () => {
+    fetch(`${API_URL}${noPeople.value}`)
     .then(response => response.json())
     .then(data => {
         nombre.innerHTML = data.name
@@ -12,3 +17,4 @@ fetch("https://swapi.dev/api/people/1")
         .catch(e => console.log(e));
     })
     .catch(e => console.log(e));
+};
