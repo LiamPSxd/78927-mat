@@ -4,3 +4,6 @@
 [submodule "practica05/Hangares"]
 	path = practica05/Hangares
 	url = https://github.com/LiamPSxd/Hangares
+[submodule "exposiciones/Thrift"]
+	path = exposiciones/Thrift
+	url = https://github.com/LiamPSxd/Thrift

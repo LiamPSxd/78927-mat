@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.demo";
+option java_outer_classname = "DemoProto";
+option objc_class_prefix = "HLW";
+
+package demo;
+
+service Pagos {
+  rpc addPago (addPago) returns (Reply) {}
+  rpc getPagos (Empty) returns (stream getPagos) {}
+}
+
+message addPago {
+  int32 folio = 1;
+  string titular = 2; 
+  string concepto = 3;
+  float cantidad = 4;
+  bool estado = 5;
+}
+
+message Reply{
+  string message = 1;
+}
+
+message Empty{}
+
+message getPagos {
+  int32 id = 1;
+  int32 folio = 2;
+  string titular = 3; 
+  string concepto = 4;
+  float cantidad = 5;
+  bool estado = 6;
+}
